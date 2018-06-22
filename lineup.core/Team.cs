@@ -5,23 +5,33 @@ namespace LineUp.Core
 {
     public abstract class Team
     {
-        public Team()
+        public Team(Guid clubGuid)
         {
-            Guid = Guid.NewGuid();
+			ClubGuid = clubGuid;
+			Guid = Guid.NewGuid();
         }
-        public Team(Guid guid)
+        public Team(Guid clubGuid, Guid teamGuid)
         {
-            Guid = guid;
+			ClubGuid = clubGuid;
+            Guid = teamGuid;
         }
-        public Guid Guid { get; set; }
+		public Guid ClubGuid { get; }
+		public Guid Guid { get; }
         public string Name { get; set; }
         public void AddPlayer(Player player)
         {
             Ensure.ArgumentNotNull(player);
-            ICommand playerAdditionCommand = GetPlayerAdditionCommand();
+            ICommand playerAdditionCommand = CreatePlayerAdditionCommand(player);
             playerAdditionCommand.Execute();
         }
 
-        public abstract ICommand GetPlayerAdditionCommand();
+		public void AddCoach(Coach coach) {
+			Ensure.ArgumentNotNull(coach);
+			ICommand coachAdditionCommand = CreateCoachAdditionCommand(coach);
+			coachAdditionCommand.Execute();
+		}
+
+		public abstract ICommand CreateCoachAdditionCommand(Coach coach);
+		public abstract ICommand CreatePlayerAdditionCommand(Player player);
     }
 }

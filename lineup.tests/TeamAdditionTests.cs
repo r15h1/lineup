@@ -9,9 +9,9 @@ namespace LineUp.Tests
     public class TeamAdditionTests
     {
         private Club club;
-        private TeamDataStore teamDataStore;        
+        private TeamDataStore teamDataStore;  
 
-        public TeamAdditionTests()
+		public TeamAdditionTests()
         {
             teamDataStore = new TeamDataStore();
             club = new ClubOffice(teamDataStore, teamDataStore);
@@ -29,21 +29,15 @@ namespace LineUp.Tests
 		[InlineData("")]
 		[InlineData("  ")]
 		public void TeamNameMusBeValid(string name)
-        {
-            Team team = new TeamSquad() { Name = name };
+        {			
+            Team team = new TeamSquad(Guid.NewGuid()) { Name = name };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
         }
 
 		[Fact]
-		public void TeamNameMustNotBeNull() {
-			Team team = new TeamSquad();
-			Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
-		}
-
-		[Fact]
         public void TeamMustHaveValidGuid()
         {
-            Team team = new TeamSquad(Guid.Empty) { Name = "U10" };
+            Team team = new TeamSquad(club.Guid, Guid.Empty) { Name = "U10" };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
         }
 
@@ -54,16 +48,16 @@ namespace LineUp.Tests
 		[InlineData(" abCD ")]
 		public void TeamNameMustBeUnique(string name)
         {
-            Team team1 = new TeamSquad() { Name = "ABCD" };
+			Team team1 = new TeamSquad(club.Guid) { Name = "ABCD" };
             club.AddTeam(team1);
-            Team team2 = new TeamSquad() { Name = name };
+            Team team2 = new TeamSquad(club.Guid) { Name = name };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team2));
         }
 
 		[Fact]
         public void TeamWithValidNameAndGuidCanBeAdded()
         {
-            Team team = new TeamSquad() { Name = "U10" };
+            Team team = new TeamSquad(club.Guid, Guid.NewGuid()) { Name = "U10" };
             club.AddTeam(team);
         }
 
