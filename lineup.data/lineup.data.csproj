@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Lineup.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\lineup.core\lineup.core.csproj" />
+    <ProjectReference Include="..\lineup.lib\lineup.lib.csproj" />
+  </ItemGroup>
+
+</Project>
