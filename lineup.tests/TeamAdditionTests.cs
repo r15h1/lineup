@@ -24,30 +24,43 @@ namespace LineUp.Tests
             Assert.Throws<ArgumentNullException>(() => club.AddTeam(null));
         }
 
-        [Fact]
-        public void TeamMustHaveValidName()
+        [Theory]
+		[InlineData(null)]
+		[InlineData("")]
+		[InlineData("  ")]
+		public void TeamNameMusBeValid(string name)
         {
-            Team team = new TeamSquad();
+            Team team = new TeamSquad() { Name = name };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
         }
 
-        [Fact]
+		[Fact]
+		public void TeamNameMustNotBeNull() {
+			Team team = new TeamSquad();
+			Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
+		}
+
+		[Fact]
         public void TeamMustHaveValidGuid()
         {
             Team team = new TeamSquad(Guid.Empty) { Name = "U10" };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
         }
 
-        [Fact]
-        public void TeamNameMustBeUnique()
+        [Theory]
+		[InlineData("ABCD")]
+		[InlineData("abcd")]
+		[InlineData("Abcd ")]
+		[InlineData(" abCD ")]
+		public void TeamNameMustBeUnique(string name)
         {
-            Team team1 = new TeamSquad() { Name = "U10" };
+            Team team1 = new TeamSquad() { Name = "ABCD" };
             club.AddTeam(team1);
-            Team team2 = new TeamSquad() { Name = "U10" };
+            Team team2 = new TeamSquad() { Name = name };
             Assert.Throws<IllegalOperationException>(() => club.AddTeam(team2));
         }
 
-        [Fact]
+		[Fact]
         public void TeamWithValidNameAndGuidCanBeAdded()
         {
             Team team = new TeamSquad() { Name = "U10" };

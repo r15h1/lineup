@@ -23,18 +23,18 @@ namespace LineUp.Core
         public void AddTeam(Team team)
         {
             Ensure.ArgumentNotNull(team);
-            ICommand addTeamCommand = GetTeamAdditionCommand(team);
+            ICommand addTeamCommand = CreateTeamAdditionCommand(team);
             addTeamCommand.Execute();
         }
 
         public void RemoveTeam(Team team)
         {
             Ensure.ArgumentNotNull(team);
-            ICommand removeTeamCommand = GetTeamRemovalCommand(team);
+            ICommand removeTeamCommand = CreateTeamRemovalCommand(team);
             removeTeamCommand.Execute();
         }
 
-        public abstract ICommand GetTeamAdditionCommand(Team team);
-        public abstract ICommand GetTeamRemovalCommand(Team team);        
+        public abstract ICommand CreateTeamAdditionCommand(Team team);
+        public abstract ICommand CreateTeamRemovalCommand(Team team);        
     }
 }

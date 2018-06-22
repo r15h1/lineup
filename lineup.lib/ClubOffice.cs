@@ -18,17 +18,17 @@ namespace LineUp.Lib
             this.teamQuery = teamQuery;
         }
 
-        public override ICommand GetTeamAdditionCommand(Team team)
+        public override ICommand CreateTeamAdditionCommand(Team team)
         {
             TeamAdditionRequest request = new TeamAdditionRequest();
             request.ClubGuid = Guid;
             request.TeamGuid = team.Guid;
-            request.TeamName = team.Name;
+            request.TeamName = team.Name?.Trim();
 
             return new TeamAdditionCommand(request, teamRepository, teamQuery);
         }
 
-        public override ICommand GetTeamRemovalCommand(Team team)
+        public override ICommand CreateTeamRemovalCommand(Team team)
         {
             throw new NotImplementedException();
         }
