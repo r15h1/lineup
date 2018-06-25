@@ -10,5 +10,9 @@ namespace LineUp.Data
         {
             throw new NotImplementedException();
         }
-    }
+
+		public void RemoveTeam(TeamRemovalRequest request) {
+			throw new NotImplementedException();
+		}
+	}
 }

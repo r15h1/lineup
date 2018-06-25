@@ -7,9 +7,9 @@ using Xunit;
 namespace LineUp.Tests {
 	public class TeamAdditionTests
     {
-        private ClubCommandFactory clubCommandFactory;
-        private TeamDataStore teamDataStore;
-		private Club club;
+        private readonly ClubCommandFactory clubCommandFactory;
+        private readonly TeamDataStore teamDataStore;
+		private readonly Club club;
 
 		public TeamAdditionTests()
         {

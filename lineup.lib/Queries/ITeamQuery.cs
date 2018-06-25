@@ -7,5 +7,6 @@ namespace LineUp.Lib.Queries
     {
         Team GetTeam(Guid clubGuid, Guid teamGuid);
         bool IsTeamNameTaken(Guid clubGuid, string teamName);
+		int GetTeamCount(Guid clubGuid);
     }
 }

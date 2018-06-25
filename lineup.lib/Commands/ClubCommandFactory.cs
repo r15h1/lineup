@@ -20,12 +20,14 @@ namespace LineUp.Lib.Commands {
 			request.ClubGuid = team.ClubGuid;
 			request.TeamGuid = team.Guid;
 			request.TeamName = team.Name?.Trim();
-
 			return new TeamAdditionCommand(request, teamRepository, teamQuery);
 		}
 
 		public ICommand CreateTeamRemovalCommand(Team team) {
-			throw new NotImplementedException();
+			TeamRemovalRequest request = new TeamRemovalRequest();
+			request.ClubGuid = team.ClubGuid;
+			request.TeamGuid = team.Guid;
+			return new TeamRemovalCommand(request, teamRepository, teamQuery);
 		}
 	}
 }

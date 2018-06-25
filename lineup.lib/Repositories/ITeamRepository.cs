@@ -5,5 +5,6 @@ namespace LineUp.Lib.Repositories
     public interface ITeamRepository
     {
         void AddTeam(TeamAdditionRequest request);
-    }
+		void RemoveTeam(TeamRemovalRequest request);
+	}
 }

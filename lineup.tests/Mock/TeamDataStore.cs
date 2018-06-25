@@ -28,12 +28,24 @@ namespace LineUp.Tests.Mock {
 			return null;
         }
 
-        public bool IsTeamNameTaken(Guid clubGuid, string teamName)
+		public int GetTeamCount(Guid clubGuid) {
+			if (teams.ContainsKey(clubGuid))
+				return teams[clubGuid].Count();
+
+			return 0;
+		}
+
+		public bool IsTeamNameTaken(Guid clubGuid, string teamName)
         {
 			if (!teamName.IsEmpty() && teams.ContainsKey(clubGuid)) {
 				return teams[clubGuid].Any(t => t.Name.ToLowerInvariant().Equals(teamName.ToLowerInvariant()));
 			}
 			return false;
         }
-    }
+
+		public void RemoveTeam(TeamRemovalRequest request) {
+			var team = teams[request.ClubGuid].SingleOrDefault(t => t.Guid == request.TeamGuid);
+			teams[request.ClubGuid].Remove(team);
+		}
+	}
 }
