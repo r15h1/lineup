@@ -4,9 +4,9 @@ using System.Text;
 
 namespace LineUp.Core
 {
-    public class IllegalOperationException:Exception
+    public class LineUpException:Exception
     {
-        public IllegalOperationException(IEnumerable<string> errors)
+        public LineUpException(IEnumerable<string> errors)
         {
             Errors = errors;
         }

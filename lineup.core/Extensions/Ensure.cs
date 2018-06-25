@@ -10,5 +10,9 @@ namespace LineUp.Core.Extensions
         {
             if (obj == null) throw new ArgumentNullException();
         }
-    }
+
+		public static void NotEmpty(Guid guid) {
+			if (guid.IsEmpty()) throw new ArgumentNullException();
+		}
+	}
 }

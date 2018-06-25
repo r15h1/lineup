@@ -1,21 +1,21 @@
 ﻿using LineUp.Core;
-using LineUp.Lib;
+using LineUp.Lib.Commands;
 using LineUp.Tests.Mock;
 using System;
 using Xunit;
 
-namespace LineUp.Tests
-{
-    public class TeamAdditionTests
+namespace LineUp.Tests {
+	public class TeamAdditionTests
     {
-        private Club club;
-        private TeamDataStore teamDataStore;  
+        private ClubCommandFactory clubCommandFactory;
+        private TeamDataStore teamDataStore;
+		private Club club;
 
 		public TeamAdditionTests()
         {
             teamDataStore = new TeamDataStore();
-            club = new ClubOffice(teamDataStore, teamDataStore);
-            club.Guid = Guid.NewGuid();
+            clubCommandFactory = new ClubCommandFactory(teamDataStore, teamDataStore);
+			club = new Club(Guid.NewGuid(), clubCommandFactory);
         }
 
         [Fact]
@@ -30,15 +30,15 @@ namespace LineUp.Tests
 		[InlineData("  ")]
 		public void TeamNameMusBeValid(string name)
         {			
-            Team team = new TeamSquad(Guid.NewGuid()) { Name = name };
-            Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
+            Team team = new Team(club.Guid) { Name = name };
+            Assert.Throws<LineUpException>(() => club.AddTeam(team));
         }
 
 		[Fact]
         public void TeamMustHaveValidGuid()
         {
-            Team team = new TeamSquad(club.Guid, Guid.Empty) { Name = "U10" };
-            Assert.Throws<IllegalOperationException>(() => club.AddTeam(team));
+            Team team = new Team(club.Guid, Guid.Empty) { Name = "U10" };
+            Assert.Throws<LineUpException>(() => club.AddTeam(team));
         }
 
         [Theory]
@@ -48,18 +48,17 @@ namespace LineUp.Tests
 		[InlineData(" abCD ")]
 		public void TeamNameMustBeUnique(string name)
         {
-			Team team1 = new TeamSquad(club.Guid) { Name = "ABCD" };
-            club.AddTeam(team1);
-            Team team2 = new TeamSquad(club.Guid) { Name = name };
-            Assert.Throws<IllegalOperationException>(() => club.AddTeam(team2));
+			Team team1 = new Team(club.Guid) { Name = "ABCD" };
+			club.AddTeam(team1);
+            Team team2 = new Team(club.Guid) { Name = name };
+            Assert.Throws<LineUpException>(() => club.AddTeam(team2));
         }
 
 		[Fact]
         public void TeamWithValidNameAndGuidCanBeAdded()
         {
-            Team team = new TeamSquad(club.Guid, Guid.NewGuid()) { Name = "U10" };
-            club.AddTeam(team);
+            Team team = new Team(club.Guid, Guid.NewGuid()) { Name = "U10" };
+			club.AddTeam(team);
         }
-
     }
 }

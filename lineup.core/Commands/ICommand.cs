@@ -1,4 +1,4 @@
-﻿namespace LineUp.Core
+﻿namespace LineUp.Core.Commands
 {
     public interface ICommand
     {

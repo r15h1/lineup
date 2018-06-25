@@ -1,14 +1,29 @@
-﻿using LineUp.Core.Extensions;
+﻿using LineUp.Core.Commands;
+using LineUp.Core.Extensions;
 using System;
 using System.Collections.Generic;
 
 namespace LineUp.Core
 {
-    public abstract class Club
+    public class Club
     {
         private List<string> urls = new List<string>();
+		private readonly IClubCommandFactory factory;
 
-        public Guid Guid { get; set; }
+		public Club(IClubCommandFactory factory) {
+			Ensure.ArgumentNotNull(factory);
+			this.Guid = Guid.NewGuid();
+			this.factory = factory;
+		}
+
+		public Club(Guid guid, IClubCommandFactory factory) {
+			Ensure.ArgumentNotNull(factory);
+			Ensure.NotEmpty(guid);
+			this.Guid = guid;
+			this.factory = factory;
+		}
+
+        public Guid Guid { get; }
         public string Name { get; set; }
         public Address Address { get; set; } = new Address();
         public IEnumerable<string> Urls { get => urls; }
@@ -16,25 +31,22 @@ namespace LineUp.Core
 
         public void AddUrl(string url)
         {
-            if (!urls.Contains(url))
-                urls.Add(url);
+            if (!url.IsEmpty() && !urls.Contains(url))
+                urls.Add(url.ToLowerInvariant().Trim());
         }
                
         public void AddTeam(Team team)
         {
             Ensure.ArgumentNotNull(team);
-            ICommand addTeamCommand = CreateTeamAdditionCommand(team);
+            ICommand addTeamCommand = factory.CreateTeamAdditionCommand(team);
             addTeamCommand.Execute();
         }
 
         public void RemoveTeam(Team team)
         {
             Ensure.ArgumentNotNull(team);
-            ICommand removeTeamCommand = CreateTeamRemovalCommand(team);
+            ICommand removeTeamCommand = factory.CreateTeamRemovalCommand(team);
             removeTeamCommand.Execute();
-        }
-
-        public abstract ICommand CreateTeamAdditionCommand(Team team);
-        public abstract ICommand CreateTeamRemovalCommand(Team team);        
+        }  
     }
 }

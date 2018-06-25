@@ -21,7 +21,7 @@ namespace LineUp.Lib.Requests
         public void Validate()
         {
             var result = Validate(this);
-            if (!result.IsValid) throw new IllegalOperationException(result.Errors.Select(e => e.ErrorMessage));
+            if (!result.IsValid) throw new LineUpException(result.Errors.Select(e => e.ErrorMessage));
         }
     }
 }
